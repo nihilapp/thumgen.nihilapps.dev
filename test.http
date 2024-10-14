@@ -1,0 +1,82 @@
+### 메인라우트
+GET http://localhost:3000/api/
+Content-Type: application/json
+
+### 모든 유저 가져오기
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+### 개별 유저 가져오기
+GET http://localhost:3000/api/users/2
+Content-Type: application/json
+
+### 유저 생성
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "email": "anikai7556@gmail.com",
+  "name": "구글니힐",
+  "role": "USER",
+  "password": "IU0516jej081*"
+}
+
+### 어드민 유저 삭제
+POST http://localhost:3000/api/admin/users
+Content-Type: application/json
+
+{
+  "user": {
+    "id": 4,
+    "uid": "7e8ad257-d4cb-4202-a2e1-3a5e0f929310",
+    "email": "nihil_ncunia@naver.com",
+    "name": "NIHILncunia",
+    "role": "ADMIN",
+    "image": null,
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI3ZThhZDI1Ny1kNGNiLTQyMDItYTJlMS0zYTVlMGY5MjkzMTAiLCJlbWFpbCI6Im5paGlsX25jdW5pYUBuYXZlci5jb20iLCJuYW1lIjoiTklISUxuY3VuaWEiLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MjczNzE4MzJ9.mw7aVnSrRG6xoCQMGEQjh5iCggy4jbyBQlxlzc6HrAk",
+    "exp": 1727371832,
+    "created": "2024-09-26T13:53:13.785Z",
+    "updated": "2024-09-26T16:30:32.961Z",
+    "isActive": true,
+    "lastSignIn": "2024-09-26T16:30:32.959Z"
+  },
+  "uids": [
+    "cf3cdec3-b329-402b-a107-f7d6f7315d87",
+    "05bfce59-574d-407c-a961-35044f0c93fa"
+  ]
+}
+
+### 이메일로 유저 검색
+GET http://localhost:3000/api/search/user/email?email=nihil
+Content-Type: application/json
+
+### 이름으로 유저 검색
+GET http://localhost:3000/api/search/user/name?name=NIHIL
+Content-Type: application/json
+
+### 유저 업데이트
+PATCH http://localhost:3000/api/users/2
+Content-Type: application/json
+
+### 어드민 로그인
+# @no-cookie-jar
+POST http://localhost:3000/api/admin/auth/signin
+Content-Type: application/json
+
+{
+  "email": "nihil_ncunia@naver.com",
+  "password": "IU0516jej081*"
+}
+
+### 로그인
+POST http://localhost:3000/api/auth/signin
+Content-Type: application/json
+
+{
+  "email": "nihil_ncunia@naver.com",
+  "password": "IU0516jej081*"
+}
+
+### 로그아웃
+POST http://localhost:3000/api/auth/signout
+Content-Type: application/json
