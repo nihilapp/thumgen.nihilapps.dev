@@ -6,18 +6,12 @@ import {
   ConfigBody, ConfigRow, TitleNumberItem, ConfigItem,
   ColorItem, ColorInput, ColorCodeText,
   SliderItem, SliderInput, SliderNumberInput,
-  ColorSwatch, ColorSwatchContainer
+  ColorSwatch, ColorSwatchContainer,
+  AdPlaceholder
 } from '@/app/(common)/_components';
+import { ConfigSection } from '@/app/(common)/_components/ConfigSection';
 import { useThumbnailState } from '@/src/hooks/useThumbnailState';
-
-const bgColorSwatches = [
-  { color: '#E34F26', name: 'HTML', },
-  { color: '#1572B6', name: 'CSS', },
-  { color: '#F7DF1E', name: 'JavaScript', },
-  { color: '#3178C6', name: 'TypeScript', },
-  { color: '#FFFFFF', name: '흰색', },
-  { color: '#000000', name: '검정', },
-];
+import { bgColorSwatches, textColorSwatches } from '@/src/data';
 
 export function Home() {
   const state = useThumbnailState();
@@ -57,13 +51,13 @@ export function Home() {
     }
 
     if (state.subtitle) {
-      ctx.font = `bold ${titleFontSizePx}px Arial`;
+      ctx.font = `bold ${titleFontSizePx}px 'Noto Sans CJK KR', sans-serif`;
       ctx.fillText(displayTitle, centerX, centerY - titleFontSizePx / 2);
 
-      ctx.font = `${subtitleFontSizePx}px Arial`;
+      ctx.font = `${subtitleFontSizePx}px 'Noto Sans CJK KR', sans-serif`;
       ctx.fillText(state.subtitle, centerX, centerY + titleFontSizePx / 2 + 10);
     } else {
-      ctx.font = `bold ${titleFontSizePx}px Arial`;
+      ctx.font = `bold ${titleFontSizePx}px 'Noto Sans CJK KR', sans-serif`;
       ctx.fillText(displayTitle, centerX, centerY);
     }
   };
@@ -104,8 +98,8 @@ export function Home() {
     }
   }, []);
 
-  const onChangeTextColor = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    state.setTextColor(e.target.value);
+  const onChangeTextColor = useCallback((color: string) => {
+    state.setTextColor(color);
   }, []);
 
   const onChangeBgColor = useCallback((color: string) => {
@@ -118,109 +112,147 @@ export function Home() {
         <Screen>
           <Canvas ref={canvasRef} />
         </Screen>
+        <AdPlaceholder>
+          광고 영역
+        </AdPlaceholder>
         <ConfigBody>
-          <ConfigRow>
-            <ConfigItem>
-              <Label htmlFor='title'>제목</Label>
-              <Input id='title' value={state.title} onChange={onChangeTitle} />
-            </ConfigItem>
-            <TitleNumberItem>
-              <Label htmlFor='seriesNumber'>시리즈 번호</Label>
-              <Input
-                id='seriesNumber'
-                value={state.seriesNumber}
-                onChange={onChangeSeriesNumber}
-                type='number'
-                min='1'
-              />
-            </TitleNumberItem>
-            <ConfigItem>
-              <Label htmlFor='subtitle'>부제목 (선택사항)</Label>
-              <Input id='subtitle' value={state.subtitle} onChange={onChangeSubtitle} />
-            </ConfigItem>
-          </ConfigRow>
-          <ConfigRow>
-            <ConfigItem>
-              <Label htmlFor='bgColor'>배경색</Label>
-              <ColorItem>
-                <ColorInput id='bgColor' type='color' value={state.bgColor} onChange={(e) => onChangeBgColor(e.target.value)} />
-                <ColorCodeText>{state.bgColor}</ColorCodeText>
-              </ColorItem>
-              <ColorSwatchContainer>
-                {bgColorSwatches.map(({ color, name, }) => (
-                  <ColorSwatch
-                    key={color}
-                    color={color}
-                    onClick={() => onChangeBgColor(color)}
-                    aria-label={`${name} 배경색 ${color}`}
-                    title={name}
+          <ConfigSection>
+            <ConfigRow>
+              <ConfigItem>
+                <Label htmlFor='title'>제목</Label>
+                <Input id='title' value={state.title} onChange={onChangeTitle} />
+              </ConfigItem>
+              <TitleNumberItem>
+                <Label htmlFor='seriesNumber'>시리즈 번호</Label>
+                <Input
+                  id='seriesNumber'
+                  value={state.seriesNumber}
+                  onChange={onChangeSeriesNumber}
+                  type='number'
+                  min='1'
+                />
+              </TitleNumberItem>
+            </ConfigRow>
+            <ConfigRow>
+              <ConfigItem>
+                <Label htmlFor='subtitle'>부제목 (선택사항)</Label>
+                <Input id='subtitle' value={state.subtitle} onChange={onChangeSubtitle} />
+              </ConfigItem>
+            </ConfigRow>
+          </ConfigSection>
+
+          <ConfigSection>
+            <ConfigRow>
+              <ConfigItem>
+                <Label htmlFor='bgColor'>배경색</Label>
+                <ColorItem>
+                  <ColorInput
+                    id='bgColor'
+                    type='color'
+                    value={state.bgColor}
+                    onChange={(e) => onChangeBgColor(e.target.value)}
                   />
-                ))}
-              </ColorSwatchContainer>
-            </ConfigItem>
-            <ConfigItem>
-              <Label htmlFor='textColor'>글자색</Label>
-              <ColorItem>
-                <ColorInput id='textColor' type='color' value={state.textColor} onChange={onChangeTextColor} />
-                <ColorCodeText>{state.textColor}</ColorCodeText>
-              </ColorItem>
-              <ColorSwatchContainer>
-                {/* 여기에 추후 글자색 견본을 추가할 수 있습니다 */}
-              </ColorSwatchContainer>
-            </ConfigItem>
-          </ConfigRow>
-          <ConfigRow>
-            <ConfigItem>
-              <Label htmlFor='titleFontSize'>제목 폰트 크기 (rem)</Label>
-              <SliderItem>
-                <SliderInput
-                  type='range'
-                  id='titleFontSize'
-                  min='1'
-                  max='8'
-                  step='0.125'
-                  value={state.titleFontSize}
-                  onChange={handleTitleFontSizeChange}
-                />
-                <SliderNumberInput
-                  type='number'
-                  value={state.titleFontSize}
-                  onChange={handleTitleFontSizeChange}
-                  step='0.125'
-                  min='1'
-                  max='8'
-                />
-              </SliderItem>
-            </ConfigItem>
-            <ConfigItem>
-              <Label htmlFor='subtitleFontSize'>부제목 폰트 크기 (rem)</Label>
-              <SliderItem>
-                <SliderInput
-                  type='range'
-                  id='subtitleFontSize'
-                  min='0.5'
-                  max='4'
-                  step='0.125'
-                  value={state.subtitleFontSize}
-                  onChange={handleSubtitleFontSizeChange}
-                />
-                <SliderNumberInput
-                  type='number'
-                  value={state.subtitleFontSize}
-                  onChange={handleSubtitleFontSizeChange}
-                  step='0.125'
-                  min='0.5'
-                  max='4'
-                />
-              </SliderItem>
-            </ConfigItem>
-          </ConfigRow>
-          <ConfigRow>
-            <ConfigItem>
-              <Label htmlFor='fileName'>파일 이름</Label>
-              <Input id='fileName' value={state.fileName} onChange={(e) => state.setFileName(e.target.value)} />
-            </ConfigItem>
-          </ConfigRow>
+                  <ColorCodeText>{state.bgColor}</ColorCodeText>
+                </ColorItem>
+                <ColorSwatchContainer>
+                  {bgColorSwatches.map(({ color, name, }) => (
+                    <ColorSwatch
+                      key={color}
+                      color={color}
+                      onClick={() => onChangeBgColor(color)}
+                      aria-label={`${name} 배경색 ${color}`}
+                      title={name}
+                    />
+                  ))}
+                </ColorSwatchContainer>
+              </ConfigItem>
+            </ConfigRow>
+            <ConfigRow>
+              <ConfigItem>
+                <Label htmlFor='textColor'>글자색</Label>
+                <ColorItem>
+                  <ColorInput
+                    id='textColor'
+                    type='color'
+                    value={state.textColor}
+                    onChange={(e) => onChangeTextColor(e.target.value)}
+                  />
+                  <ColorCodeText>{state.textColor}</ColorCodeText>
+                </ColorItem>
+                <ColorSwatchContainer>
+                  {textColorSwatches.map(({ color, name, }) => (
+                    <ColorSwatch
+                      key={color}
+                      color={color}
+                      onClick={() => onChangeTextColor(color)}
+                      aria-label={`${name} 글자색 ${color}`}
+                      title={name}
+                    />
+                  ))}
+                </ColorSwatchContainer>
+              </ConfigItem>
+            </ConfigRow>
+          </ConfigSection>
+
+          <ConfigSection>
+            <ConfigRow>
+              <ConfigItem>
+                <Label htmlFor='titleFontSize'>제목 폰트 크기 (rem)</Label>
+                <SliderItem>
+                  <SliderInput
+                    type='range'
+                    id='titleFontSize'
+                    min='1'
+                    max='8'
+                    step='0.125'
+                    value={state.titleFontSize}
+                    onChange={handleTitleFontSizeChange}
+                  />
+                  <SliderNumberInput
+                    type='number'
+                    value={state.titleFontSize}
+                    onChange={handleTitleFontSizeChange}
+                    step='0.125'
+                    min='1'
+                    max='8'
+                  />
+                </SliderItem>
+              </ConfigItem>
+            </ConfigRow>
+            <ConfigRow>
+              <ConfigItem>
+                <Label htmlFor='subtitleFontSize'>부제목 폰트 크기 (rem)</Label>
+                <SliderItem>
+                  <SliderInput
+                    type='range'
+                    id='subtitleFontSize'
+                    min='0.5'
+                    max='4'
+                    step='0.125'
+                    value={state.subtitleFontSize}
+                    onChange={handleSubtitleFontSizeChange}
+                  />
+                  <SliderNumberInput
+                    type='number'
+                    value={state.subtitleFontSize}
+                    onChange={handleSubtitleFontSizeChange}
+                    step='0.125'
+                    min='0.5'
+                    max='4'
+                  />
+                </SliderItem>
+              </ConfigItem>
+            </ConfigRow>
+          </ConfigSection>
+
+          <ConfigSection>
+            <ConfigRow>
+              <ConfigItem>
+                <Label htmlFor='fileName'>파일 이름</Label>
+                <Input id='fileName' value={state.fileName} onChange={(e) => state.setFileName(e.target.value)} />
+              </ConfigItem>
+            </ConfigRow>
+          </ConfigSection>
         </ConfigBody>
         <Button onClick={handleSave}>이미지 저장</Button>
       </div>

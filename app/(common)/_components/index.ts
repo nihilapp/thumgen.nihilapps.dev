@@ -17,3 +17,5 @@ export { SliderInput } from './SliderInput';
 export { SliderNumberInput } from './SliderNumberInput';
 export { ColorSwatch } from './ColorSwatch';
 export { ColorSwatchContainer } from './ColorSwatchContainer';
+export { ConfigSection } from './ConfigSection';
+export { AdPlaceholder } from './AdPlaceholder';
