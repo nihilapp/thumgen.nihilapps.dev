@@ -19,3 +19,4 @@ export { ColorSwatch } from './ColorSwatch';
 export { ColorSwatchContainer } from './ColorSwatchContainer';
 export { ConfigSection } from './ConfigSection';
 export { AdPlaceholder } from './AdPlaceholder';
+export { Select } from './Select';

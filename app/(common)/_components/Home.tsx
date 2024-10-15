@@ -7,11 +7,21 @@ import {
   ColorItem, ColorInput, ColorCodeText,
   SliderItem, SliderInput, SliderNumberInput,
   ColorSwatch, ColorSwatchContainer,
-  AdPlaceholder
+  AdPlaceholder,
+  Select
 } from '@/app/(common)/_components';
 import { ConfigSection } from '@/app/(common)/_components/ConfigSection';
 import { useThumbnailState } from '@/src/hooks/useThumbnailState';
 import { bgColorSwatches, textColorSwatches } from '@/src/data';
+import {
+  createOnChangeTitle,
+  createOnChangeSeriesNumber,
+  createOnChangeSubtitle,
+  createHandleTitleFontSizeChange,
+  createHandleSubtitleFontSizeChange,
+  createOnChangeTextColor,
+  createOnChangeBgColor
+} from '@/app/(common)/_functions';
 
 export function Home() {
   const state = useThumbnailState();
@@ -67,44 +77,57 @@ export function Home() {
     if (!canvas) return;
 
     const link = document.createElement('a');
-    link.download = `${state.fileName}.png`;
-    link.href = canvas.toDataURL();
+    link.download = `${state.fileName}.${state.fileExtension}`;
+    link.href = canvas.toDataURL(`image/${state.fileExtension}`);
     link.click();
   };
 
-  const onChangeTitle = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    state.setTitle(event.target.value);
-  }, []);
+  const {
+    setTitle,
+    setSeriesNumber,
+    setSubtitle,
+    setTitleFontSize,
+    setSubtitleFontSize,
+    setTextColor,
+    setBgColor,
+    setFileName,
+    setFileExtension,
+  } = state;
 
-  const onChangeSeriesNumber = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    state.setSeriesNumber(event.target.value);
-  }, []);
+  const onChangeTitle = useCallback(
+    createOnChangeTitle(setTitle),
+    [ setTitle, ]
+  );
 
-  const onChangeSubtitle = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    state.setSubtitle(event.target.value);
-  }, []);
+  const onChangeSeriesNumber = useCallback(
+    createOnChangeSeriesNumber(setSeriesNumber),
+    [ setSeriesNumber, ]
+  );
 
-  const handleTitleFontSizeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
-    if (!Number.isNaN(value) && value >= 1 && value <= 8) {
-      state.setTitleFontSize(parseFloat(value.toFixed(3)));
-    }
-  }, []);
+  const onChangeSubtitle = useCallback(
+    createOnChangeSubtitle(setSubtitle),
+    [ setSubtitle, ]
+  );
 
-  const handleSubtitleFontSizeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
-    if (!Number.isNaN(value) && value >= 0.5 && value <= 4) {
-      state.setSubtitleFontSize(parseFloat(value.toFixed(3)));
-    }
-  }, []);
+  const handleTitleFontSizeChange = useCallback(
+    createHandleTitleFontSizeChange(setTitleFontSize),
+    [ setTitleFontSize, ]
+  );
 
-  const onChangeTextColor = useCallback((color: string) => {
-    state.setTextColor(color);
-  }, []);
+  const handleSubtitleFontSizeChange = useCallback(
+    createHandleSubtitleFontSizeChange(setSubtitleFontSize),
+    [ setSubtitleFontSize, ]
+  );
 
-  const onChangeBgColor = useCallback((color: string) => {
-    state.setBgColor(color);
-  }, []);
+  const onChangeTextColor = useCallback(
+    createOnChangeTextColor(setTextColor),
+    [ setTextColor, ]
+  );
+
+  const onChangeBgColor = useCallback(
+    createOnChangeBgColor(setBgColor),
+    [ setBgColor, ]
+  );
 
   return (
     <Card>
@@ -249,7 +272,23 @@ export function Home() {
             <ConfigRow>
               <ConfigItem>
                 <Label htmlFor='fileName'>파일 이름</Label>
-                <Input id='fileName' value={state.fileName} onChange={(e) => state.setFileName(e.target.value)} />
+                <Input
+                  id='fileName'
+                  value={state.fileName}
+                  onChange={(e) => setFileName(e.target.value)}
+                />
+              </ConfigItem>
+              <ConfigItem>
+                <Label htmlFor='fileExtension'>파일 확장자</Label>
+                <Select
+                  id='fileExtension'
+                  value={state.fileExtension}
+                  onChange={(e) => setFileExtension(e.target.value)}
+                >
+                  <option value='png'>PNG</option>
+                  <option value='jpg'>JPG</option>
+                  <option value='webp'>WebP</option>
+                </Select>
               </ConfigItem>
             </ConfigRow>
           </ConfigSection>
