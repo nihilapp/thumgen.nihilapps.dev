@@ -2,26 +2,17 @@
 
 import styled from 'styled-components';
 import { size } from '@/src/styles';
+import { commonBorderStyle } from './commonStyles';
 
 export const Select = styled.select`
+  ${commonBorderStyle}
   width: 100%;
-  padding: ${size.normal[2]} ${size.normal[3]};
-  font-size: 1rem;
+  height: 50px; // 40px에서 50px로 변경
+  padding: ${size.normal[1]};
   line-height: 1.5;
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-  &:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
 
   &:disabled {
     background-color: #e9ecef;

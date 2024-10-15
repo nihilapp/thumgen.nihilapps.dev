@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { size } from '@/src/styles';
+import { color, size } from '@/src/styles';
 
 export const Card = styled.div`
   display: flex;
@@ -9,4 +9,5 @@ export const Card = styled.div`
   align-items: center;
   justify-content: center;
   font-size: ${size.text.md};
+  color: ${color.black.base};
 `;

@@ -1,16 +1,12 @@
 'use client';
 
 import styled from 'styled-components';
-import { color, size } from '@/src/styles';
+import { size } from '@/src/styles';
+import { commonBorderStyle } from './commonStyles';
 
 export const Input = styled.input`
-  border: 1px solid ${color.black[100]};
+  ${commonBorderStyle}
   padding: ${size.normal[1]};
-  border-radius: ${size.normal[1]};
   width: 100%;
-
-  &:focus {
-    outline: none;
-    border-color: ${color.blue[500]};
-  }
+  height: 50px; // 40px에서 50px로 변경
 `;
