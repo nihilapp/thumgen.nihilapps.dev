@@ -4,7 +4,7 @@ import { useRef, useEffect, useCallback } from 'react';
 import {
   Button, Input, Label, Canvas, Card, Screen,
   ConfigBody, ConfigRow, TitleNumberItem, ConfigItem,
-  ColorInput, ColorCodeText,
+  ColorInput,
   SliderItem, SliderInput, SliderNumberInput,
   ColorSwatch, ColorSwatchContainer,
   AdPlaceholder,
@@ -151,6 +151,21 @@ export function Home() {
     },
     [ setBgColor, state.bgColor, ]
   );
+
+  useEffect(() => {
+    const generateFileName = () => {
+      let fileName = state.title.trim();
+      if (state.seriesNumber) {
+        fileName += ` #${state.seriesNumber}`;
+      }
+      if (state.subtitle) {
+        fileName += ` - ${state.subtitle.trim()}`;
+      }
+      setFileName(fileName);
+    };
+
+    generateFileName();
+  }, [ state.title, state.seriesNumber, state.subtitle, ]);
 
   return (
     <Card>
@@ -332,6 +347,7 @@ export function Home() {
                   id='fileName'
                   value={state.fileName}
                   onChange={(e) => setFileName(e.target.value)}
+                  readOnly
                 />
               </ConfigItem>
               <ConfigItem>
