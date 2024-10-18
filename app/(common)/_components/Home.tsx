@@ -176,11 +176,6 @@ export function Home() {
         <AdPlaceholder>
           광고 영역
         </AdPlaceholder>
-        <HEXCodeText
-          type='bgColor'
-          state={state}
-          handler={handleColorCodeChange}
-        />
         <ConfigBody>
           <ConfigSection>
             <ConfigRow>
