@@ -4,11 +4,14 @@ import { useRef, useEffect, useCallback } from 'react';
 import {
   Button, Input, Label, Canvas, Card, Screen,
   ConfigBody, ConfigRow, TitleNumberItem, ConfigItem,
-  ColorItem, ColorInput, ColorCodeText,
+  ColorInput, ColorCodeText,
   SliderItem, SliderInput, SliderNumberInput,
   ColorSwatch, ColorSwatchContainer,
   AdPlaceholder,
-  Select
+  Select,
+  RGBInputControl,
+  RGBLabel,
+  HEXCodeText
 } from '@/app/(common)/_components';
 import { ConfigSection } from '@/app/(common)/_components/ConfigSection';
 import { useThumbnailState } from '@/src/hooks/useThumbnailState';
@@ -20,8 +23,14 @@ import {
   createHandleTitleFontSizeChange,
   createHandleSubtitleFontSizeChange,
   createOnChangeTextColor,
-  createOnChangeBgColor
+  createOnChangeBgColor,
+  createHandleColorCodeChange,
+  createHandleRGBChange
+  // 다른 필요한 함수들도 여기서 import
 } from '@/app/(common)/_functions';
+import {
+  ColorCodeWrapper, ColorInputContainer, ColorInputWrapper, EmptyLabel
+} from '@/app/(common)/_components/ColorInputContainer';
 
 export function Home() {
   const state = useThumbnailState();
@@ -92,6 +101,7 @@ export function Home() {
     setBgColor,
     setFileName,
     setFileExtension,
+    setIsDisabled,
   } = state;
 
   const onChangeTitle = useCallback(
@@ -129,6 +139,19 @@ export function Home() {
     [ setBgColor, ]
   );
 
+  const handleColorCodeChange = useCallback(
+    createHandleColorCodeChange(setBgColor, setIsDisabled),
+    [ setBgColor, setIsDisabled, ]
+  );
+
+  const handleRGBChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const colorType = e.target.name as 'r' | 'g' | 'b';
+      createHandleRGBChange(setBgColor, state.bgColor, colorType)(e);
+    },
+    [ setBgColor, state.bgColor, ]
+  );
+
   return (
     <Card>
       <div>
@@ -138,6 +161,11 @@ export function Home() {
         <AdPlaceholder>
           광고 영역
         </AdPlaceholder>
+        <HEXCodeText
+          type='bgColor'
+          state={state}
+          handler={handleColorCodeChange}
+        />
         <ConfigBody>
           <ConfigSection>
             <ConfigRow>
@@ -168,15 +196,29 @@ export function Home() {
             <ConfigRow>
               <ConfigItem>
                 <Label htmlFor='bgColor'>배경색</Label>
-                <ColorItem>
-                  <ColorInput
-                    id='bgColor'
-                    type='color'
-                    value={state.bgColor}
-                    onChange={(e) => onChangeBgColor(e.target.value)}
+                <ColorInputContainer>
+                  <ColorInputWrapper>
+                    <EmptyLabel />
+                    <ColorInput
+                      id='bgColor'
+                      value={state.bgColor}
+                      onChange={() => onChangeBgColor(state.bgColor)}
+                    />
+                  </ColorInputWrapper>
+                  <ColorCodeWrapper>
+                    <RGBLabel htmlFor='colorCode'>HEX</RGBLabel>
+                    <HEXCodeText
+                      type='bgColor'
+                      state={state}
+                      handler={handleColorCodeChange}
+                    />
+                  </ColorCodeWrapper>
+                  <RGBInputControl
+                    state={state}
+                    type='bgColor'
+                    handler={handleRGBChange}
                   />
-                  <ColorCodeText>{state.bgColor}</ColorCodeText>
-                </ColorItem>
+                </ColorInputContainer>
                 <ColorSwatchContainer>
                   {bgColorSwatches.map(({ color, name, }) => (
                     <ColorSwatch
@@ -193,15 +235,29 @@ export function Home() {
             <ConfigRow>
               <ConfigItem>
                 <Label htmlFor='textColor'>글자색</Label>
-                <ColorItem>
-                  <ColorInput
-                    id='textColor'
-                    type='color'
-                    value={state.textColor}
-                    onChange={(e) => onChangeTextColor(e.target.value)}
+                <ColorInputContainer>
+                  <ColorInputWrapper>
+                    <EmptyLabel />
+                    <ColorInput
+                      id='textColor'
+                      value={state.textColor}
+                      onChange={() => onChangeTextColor(state.textColor)}
+                    />
+                  </ColorInputWrapper>
+                  <ColorCodeWrapper>
+                    <RGBLabel htmlFor='colorCode'>HEX</RGBLabel>
+                    <HEXCodeText
+                      type='textColor'
+                      state={state}
+                      handler={handleColorCodeChange}
+                    />
+                  </ColorCodeWrapper>
+                  <RGBInputControl
+                    state={state}
+                    type='textColor'
+                    handler={handleRGBChange}
                   />
-                  <ColorCodeText>{state.textColor}</ColorCodeText>
-                </ColorItem>
+                </ColorInputContainer>
                 <ColorSwatchContainer>
                   {textColorSwatches.map(({ color, name, }) => (
                     <ColorSwatch

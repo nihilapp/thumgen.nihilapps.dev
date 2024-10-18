@@ -20,6 +20,8 @@ export type ThumbnailState = {
   setFileName: (fileName: string) => void;
   fileExtension: string;
   setFileExtension: (extension: string) => void;
+  isDisabled: boolean;
+  setIsDisabled: (isDisabled: boolean) => void;
 };
 
 export const useThumbnailState = (): ThumbnailState => {
@@ -32,6 +34,7 @@ export const useThumbnailState = (): ThumbnailState => {
   const [ fileExtension, setFileExtension, ] = useState('png');
   const [ titleFontSize, setTitleFontSize, ] = useState(4.75);
   const [ subtitleFontSize, setSubtitleFontSize, ] = useState(3);
+  const [ isDisabled, setIsDisabled, ] = useState(false);
 
   return {
     title,
@@ -52,5 +55,7 @@ export const useThumbnailState = (): ThumbnailState => {
     setTitleFontSize,
     subtitleFontSize,
     setSubtitleFontSize,
+    isDisabled,
+    setIsDisabled,
   };
 };

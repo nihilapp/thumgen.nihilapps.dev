@@ -20,3 +20,15 @@ export { ColorSwatchContainer } from './ColorSwatchContainer';
 export { ConfigSection } from './ConfigSection';
 export { AdPlaceholder } from './AdPlaceholder';
 export { Select } from './Select';
+export { RGBInputContainer } from './RGBInput';
+export { RGBInputWrapper } from './RGBInput';
+export { RGBLabel } from './RGBInput';
+export { RGBInput } from './RGBInput';
+export {
+  ColorInputContainer,
+  ColorInputWrapper,
+  ColorCodeWrapper,
+  EmptyLabel
+} from './ColorInputContainer';
+export { RGBInputControl } from './RGBInputControl';
+export { HEXCodeText } from './HEXCodeText';
